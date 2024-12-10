@@ -1,7 +1,5 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
-import 'dayjs/locale/ko';
-dayjs.locale('ko');
 
 import { SlackNotifierConfig } from '../../config/SlackNotifierConfig';
 import { NotifyArg, SlackMessagePayload } from './SlackNotifierTypes';
