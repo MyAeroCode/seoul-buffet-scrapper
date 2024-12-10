@@ -7,7 +7,7 @@ import { NotifyArg, SlackMessagePayload } from './SlackNotifierTypes';
 export class SlackNotifier {
     static async notify(arg: NotifyArg) {
         const payload: SlackMessagePayload = {
-            text: `[${this.getCurrentDate()}] ${arg.buffetAlias}`,
+            text: `*[${this.getCurrentDate()}]* :drooling_face: ${arg.buffetAlias}`,
             attachments: [],
         };
 
