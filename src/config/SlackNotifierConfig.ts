@@ -1,3 +1,3 @@
 export const SlackNotifierConfig = {
-    slackWebhookUrl: '',
+    slackWebhookUrl: process.env.SLACK_WEBHOOK_URL,
 };

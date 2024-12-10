@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config({ path: `${__dirname}/env/.env` });
+
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
