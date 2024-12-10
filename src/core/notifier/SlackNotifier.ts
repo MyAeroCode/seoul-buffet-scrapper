@@ -7,14 +7,14 @@ import { NotifyArg, SlackMessagePayload } from './SlackNotifierTypes';
 export class SlackNotifier {
     static async notify(arg: NotifyArg) {
         const payload: SlackMessagePayload = {
-            text: `*[${this.getCurrentDate()}]* :drooling_face: ${arg.buffetAlias}`,
+            text: `*[${this.getCurrentDate()} - ${arg.buffetAlias}]* 한식뷔페 파티 찾아요! 🤤`,
             attachments: [],
         };
 
         for (const imageUrl of arg.imageUrls) {
             payload.attachments.push({
                 color: '#36a64f',
-                text: 'image',
+                text: '메뉴 이미지',
                 image_url: imageUrl,
             });
         }
