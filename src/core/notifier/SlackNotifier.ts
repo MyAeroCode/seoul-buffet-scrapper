@@ -6,7 +6,7 @@ import { NotifyArg, SlackMessagePayload } from './SlackNotifierTypes';
 export class SlackNotifier {
     static async notify(arg: NotifyArg) {
         const payload: SlackMessagePayload = {
-            text: arg.targetUserName,
+            text: arg.buffetAlias,
             attachments: [],
         };
 

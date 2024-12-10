@@ -1,5 +1,5 @@
 export interface NotifyArg {
-    targetUserName: string;
+    buffetAlias: string;
     imageUrls: string[];
 }
 

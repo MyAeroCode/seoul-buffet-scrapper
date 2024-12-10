@@ -22,7 +22,7 @@ export abstract class InstagramScrapperExecuter {
         const imageUrls = await this.getRecentImages();
 
         await SlackNotifier.notify({
-            targetUserName: this.targetUserName,
+            buffetAlias: this.alias,
             imageUrls,
         });
     }
