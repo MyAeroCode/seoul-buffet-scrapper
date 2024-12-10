@@ -4,15 +4,18 @@ import { InstagramScrapper } from './InstagramScrapper';
 export interface InstagramScrapperExecuterSource {
     targetUserName: string;
     imageScrapCount: number;
+    alias: string;
 }
 
 export abstract class InstagramScrapperExecuter {
     protected readonly targetUserName: string;
     protected readonly imageScrapCount: number;
+    protected readonly alias: string;
 
     constructor(source: InstagramScrapperExecuterSource) {
         this.targetUserName = source.targetUserName;
         this.imageScrapCount = source.imageScrapCount;
+        this.alias = source.alias;
     }
 
     async execute(): Promise<void> {

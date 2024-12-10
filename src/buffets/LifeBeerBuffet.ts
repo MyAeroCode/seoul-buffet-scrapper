@@ -5,6 +5,7 @@ export class LifeBeerBuffet extends InstagramScrapperExecuter {
         super({
             targetUserName: 'brs_buffet',
             imageScrapCount: 2,
+            alias: '인쌩맥주',
         });
     }
 }
