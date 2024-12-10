@@ -1,4 +1,5 @@
 import axios from 'axios';
+import dayjs from 'dayjs';
 
 import { SlackNotifierConfig } from '../../config/SlackNotifierConfig';
 import { NotifyArg, SlackMessagePayload } from './SlackNotifierTypes';
@@ -6,7 +7,7 @@ import { NotifyArg, SlackMessagePayload } from './SlackNotifierTypes';
 export class SlackNotifier {
     static async notify(arg: NotifyArg) {
         const payload: SlackMessagePayload = {
-            text: arg.targetUserName,
+            text: `*[${this.getCurrentDate()}]* :drooling_face: ${arg.buffetAlias}`,
             attachments: [],
         };
 
@@ -19,5 +20,9 @@ export class SlackNotifier {
         }
 
         axios.post(SlackNotifierConfig.slackWebhookUrl, payload);
+    }
+
+    private static getCurrentDate(): string {
+        return dayjs().startOf('day').format('YYYY-MM-DD (ddd)');
     }
 }
