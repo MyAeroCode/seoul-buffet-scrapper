@@ -1,3 +1,4 @@
+import { SlackNotifier } from '../notifier/SlackNotifier';
 import { InstagramScrapper } from './InstagramScrapper';
 
 export interface InstagramScrapperExecuterSource {
@@ -15,7 +16,12 @@ export abstract class InstagramScrapperExecuter {
     }
 
     async execute(): Promise<void> {
-        //
+        const imageUrls = await this.getRecentImages();
+
+        await SlackNotifier.notify({
+            targetUserName: this.targetUserName,
+            imageUrls,
+        });
     }
 
     private async getRecentImages(): Promise<string[]> {
