@@ -23,6 +23,6 @@ export class SlackNotifier {
     }
 
     private static getCurrentDate(): string {
-        return dayjs().startOf('day').format('YYYY-MM-DD(ddd)');
+        return dayjs().startOf('day').format('YYYY-MM-DD (ddd)');
     }
 }
