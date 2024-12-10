@@ -14,7 +14,7 @@ export class SlackNotifier {
         for (const imageUrl of arg.imageUrls) {
             payload.attachments.push({
                 color: '#36a64f',
-                text: 'image',
+                text: '메뉴 이미지',
                 image_url: imageUrl,
             });
         }
