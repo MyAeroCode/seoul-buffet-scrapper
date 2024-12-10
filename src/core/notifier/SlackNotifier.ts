@@ -1,3 +1,6 @@
+import axios from 'axios';
+
+import { SlackNotifierConfig } from '../../config/SlackNotifierConfig';
 import { NotifyArg, SlackMessagePayload } from './SlackNotifierTypes';
 
 export class SlackNotifier {
@@ -15,6 +18,6 @@ export class SlackNotifier {
             });
         }
 
-        console.log(JSON.stringify(payload, null, 4));
+        axios.post(SlackNotifierConfig.slackWebhookUrl, payload);
     }
 }
