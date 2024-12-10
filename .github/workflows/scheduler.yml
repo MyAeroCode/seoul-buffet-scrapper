@@ -2,8 +2,8 @@ name: Scheduler
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 2 * * 1-5' # 평일 오전 11시
+  # schedule:
+  #  - cron: '0 2 * * 1-5' # 평일 오전 11시
 
 jobs:
   scrap:
