@@ -1,3 +1,4 @@
+import { GeminiAnalyzer } from '../analyzer/GeminiAnalyzer';
 import { SlackNotifier } from '../notifier/SlackNotifier';
 import { InstagramScrapper } from './InstagramScrapper';
 
@@ -21,8 +22,11 @@ export abstract class InstagramScrapperExecuter {
     async execute(): Promise<void> {
         const imageUrls = await this.getRecentImages();
 
+        const menuText = await GeminiAnalyzer.analyze(imageUrls);
+
         await SlackNotifier.notify({
             buffetAlias: this.alias,
+            body: menuText,
             imageUrls,
         });
     }
