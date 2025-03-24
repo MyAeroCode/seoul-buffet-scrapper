@@ -7,7 +7,10 @@ import { NotifyArg, SlackMessagePayload } from './SlackNotifierTypes';
 export class SlackNotifier {
     static async notify(arg: NotifyArg) {
         const payload: SlackMessagePayload = {
-            text: `*[${this.getCurrentDate()} - ${arg.buffetAlias}]* 한식뷔페 파티 찾아요! 🤤`,
+            text: [
+                `*[${this.getCurrentDate()} - ${arg.buffetAlias}]* 한식뷔페 파티 찾아요! 🤤`,
+                arg.body,
+            ].join('\n\n'),
             attachments: [],
         };
 
