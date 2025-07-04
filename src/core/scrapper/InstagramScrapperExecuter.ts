@@ -32,7 +32,11 @@ export abstract class InstagramScrapperExecuter {
     }
 
     private async getRecentImages(): Promise<string[]> {
-        const recentImages = await InstagramScrapper.getRecentImages(this.targetUserName);
-        return recentImages.slice(0, this.imageScrapCount);
+        const recentImages = await InstagramScrapper.getRecentImages({
+            username: this.targetUserName,
+            imageScrapCount: this.imageScrapCount,
+        });
+
+        return recentImages;
     }
 }
