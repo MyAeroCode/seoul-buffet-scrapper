@@ -5,8 +5,6 @@ import { CoreMessage } from 'ai';
 export function generateTodayPrompt(imageUrls: string[]): CoreMessage[] {
     const today: string = dayjs().format('YYYY-MM-DD (ddd)');
 
-    console.log(today, imageUrls);
-
     return [
         {
             role: 'user',
