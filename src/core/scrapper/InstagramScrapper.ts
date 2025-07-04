@@ -3,10 +3,13 @@ import { ApifyClient } from 'apify-client';
 import { ApifyConfig } from '../../config/ApifyConfig';
 
 export class InstagramScrapper {
-    static async getRecentImages(username: string): Promise<string[]> {
-        const client = new ApifyClient({
-            token: ApifyConfig.apiToken,
-        });
+    static async getRecentImages(params: {
+        username: string;
+        imageScrapCount: number;
+    }): Promise<string[]> {
+        const { username, imageScrapCount } = params;
+
+        const client = new ApifyClient({ token: ApifyConfig.apiToken });
 
         const input = {
             addParentData: false,
@@ -14,7 +17,7 @@ export class InstagramScrapper {
             enhanceUserSearchWithFacebookPage: false,
             isUserReelFeedURL: false,
             isUserTaggedFeedURL: false,
-            resultsLimit: 1,
+            resultsLimit: imageScrapCount,
             resultsType: 'posts',
             searchLimit: 1,
             searchType: 'hashtag',
