@@ -19,7 +19,7 @@ async function main() {
     const targetBuffets: InstagramScrapperExecuter[] = [
         new LifeBeerBuffet(),
         new OmiraKitchenBuffet(),
-    ];
+    ].reverse();
 
     for (const targetBuffet of targetBuffets) {
         await targetBuffet.execute();
