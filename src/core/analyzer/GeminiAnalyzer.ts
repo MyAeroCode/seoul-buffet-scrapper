@@ -6,7 +6,7 @@ export class GeminiAnalyzer {
     static async analyze(imageUrls: string[]): Promise<string> {
         try {
             const result = await generateText({
-                model: google('gemini-2.0-flash'),
+                model: google('gemini-2.5-pro'),
                 messages: generateTodayPrompt(imageUrls),
             });
 
