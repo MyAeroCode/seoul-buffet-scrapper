@@ -2,7 +2,15 @@ import { ApifyClient } from 'apify-client';
 
 import { ApifyConfig } from '../../config/ApifyConfig';
 
+interface InstagramPost {
+    type: string;
+    timestamp: string;
+    displayUrl: string;
+}
+
 export class InstagramScrapper {
+    private static readonly MAX_ATTEMPTS = 3;
+
     static async getRecentImages(params: {
         username: string;
         imageScrapCount: number;
@@ -11,30 +19,44 @@ export class InstagramScrapper {
 
         const client = new ApifyClient({ token: ApifyConfig.apiToken });
 
+        for (let attempt = 1; attempt <= this.MAX_ATTEMPTS; attempt++) {
+            const latestPosts = await this.getLatestPosts(client, username, attempt);
+
+            if (latestPosts.length > 0) {
+                const recentPosts = latestPosts
+                    .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
+                    .slice(0, imageScrapCount);
+
+                const imagePosts = recentPosts.filter((post) => post.type === 'Image');
+
+                return imagePosts.map((post) => post.displayUrl);
+            }
+        }
+
+        return [];
+    }
+
+    private static async getLatestPosts(
+        client: ApifyClient,
+        username: string,
+        attempt: number,
+    ): Promise<InstagramPost[]> {
         const input = {
-            addParentData: false,
-            directUrls: [`https://www.instagram.com/${username}/`],
-            enhanceUserSearchWithFacebookPage: false,
-            isUserReelFeedURL: false,
-            isUserTaggedFeedURL: false,
-            resultsLimit: imageScrapCount,
-            resultsType: 'posts',
-            searchLimit: 1,
-            searchType: 'hashtag',
+            usernames: [username],
         };
 
-        const instagramScrapperActorId = 'shu8hvrXbJbY3Eb9W';
-        const run = await client.actor(instagramScrapperActorId).call(input);
+        const instagramProfileScrapperActorId = 'apify/instagram-profile-scraper';
+        const run = await client.actor(instagramProfileScrapperActorId).call(input);
 
         const { items } = await client.dataset(run.defaultDatasetId).listItems();
 
-        console.log(`[apify] ${username} run=${run.status} items=${items.length}`);
+        console.log(
+            `[apify] ${username} attempt=${attempt} run=${run.status} items=${items.length}`,
+        );
         for (const item of items.filter((item) => item.error)) {
             console.log(`[apify] ${username} error=${item.error} (${item.errorDescription})`);
         }
 
-        const imageItems = items.filter((items) => items.type === 'Image');
-
-        return imageItems.map((item) => item.displayUrl as string);
+        return items.flatMap((item) => (item.latestPosts ?? []) as InstagramPost[]);
     }
 }
