@@ -22,6 +22,7 @@ export abstract class InstagramScrapperExecuter {
 
     async execute(): Promise<void> {
         const imageUrls = await this.getRecentImages();
+        console.log(`[${this.alias}] images=${imageUrls.length}`);
 
         const menuText = imageUrls.length > 0 ? await GeminiAnalyzer.analyze(imageUrls) : '';
 

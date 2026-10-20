@@ -10,6 +10,8 @@ export class GeminiAnalyzer {
                 messages: generateTodayPrompt(imageUrls),
             });
 
+            console.log(`[gemini] finishReason=${result.finishReason}\n${result.text}`);
+
             return result.text;
         } catch (error) {
             console.error(error);
