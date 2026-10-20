@@ -2,6 +2,12 @@ import { ApifyClient } from 'apify-client';
 
 import { ApifyConfig } from '../../config/ApifyConfig';
 
+interface InstagramPost {
+    type: string;
+    timestamp: string;
+    displayUrl: string;
+}
+
 export class InstagramScrapper {
     static async getRecentImages(params: {
         username: string;
@@ -12,19 +18,11 @@ export class InstagramScrapper {
         const client = new ApifyClient({ token: ApifyConfig.apiToken });
 
         const input = {
-            addParentData: false,
-            directUrls: [`https://www.instagram.com/${username}/`],
-            enhanceUserSearchWithFacebookPage: false,
-            isUserReelFeedURL: false,
-            isUserTaggedFeedURL: false,
-            resultsLimit: imageScrapCount,
-            resultsType: 'posts',
-            searchLimit: 1,
-            searchType: 'hashtag',
+            usernames: [username],
         };
 
-        const instagramScrapperActorId = 'shu8hvrXbJbY3Eb9W';
-        const run = await client.actor(instagramScrapperActorId).call(input);
+        const instagramProfileScrapperActorId = 'apify/instagram-profile-scraper';
+        const run = await client.actor(instagramProfileScrapperActorId).call(input);
 
         const { items } = await client.dataset(run.defaultDatasetId).listItems();
 
@@ -33,8 +31,13 @@ export class InstagramScrapper {
             console.log(`[apify] ${username} error=${item.error} (${item.errorDescription})`);
         }
 
-        const imageItems = items.filter((items) => items.type === 'Image');
+        const recentPosts = items
+            .flatMap((item) => (item.latestPosts ?? []) as InstagramPost[])
+            .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
+            .slice(0, imageScrapCount);
 
-        return imageItems.map((item) => item.displayUrl as string);
+        const imagePosts = recentPosts.filter((post) => post.type === 'Image');
+
+        return imagePosts.map((post) => post.displayUrl);
     }
 }
