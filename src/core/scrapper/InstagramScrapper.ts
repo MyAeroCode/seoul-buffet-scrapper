@@ -28,6 +28,11 @@ export class InstagramScrapper {
 
         const { items } = await client.dataset(run.defaultDatasetId).listItems();
 
+        console.log(`[apify] ${username} run=${run.status} items=${items.length}`);
+        for (const item of items.filter((item) => item.error)) {
+            console.log(`[apify] ${username} error=${item.error} (${item.errorDescription})`);
+        }
+
         const imageItems = items.filter((items) => items.type === 'Image');
 
         return imageItems.map((item) => item.displayUrl as string);

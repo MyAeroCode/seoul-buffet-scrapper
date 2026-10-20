@@ -1,4 +1,5 @@
 import { GeminiAnalyzer } from '../analyzer/GeminiAnalyzer';
+import { UNKNOWN_MENU_TEXT } from '../analyzer/PromptUtils';
 import { SlackNotifier } from '../notifier/SlackNotifier';
 import { InstagramScrapper } from './InstagramScrapper';
 
@@ -21,12 +22,13 @@ export abstract class InstagramScrapperExecuter {
 
     async execute(): Promise<void> {
         const imageUrls = await this.getRecentImages();
+        console.log(`[${this.alias}] images=${imageUrls.length}`);
 
-        const menuText = await GeminiAnalyzer.analyze(imageUrls);
+        const menuText = imageUrls.length > 0 ? await GeminiAnalyzer.analyze(imageUrls) : '';
 
         await SlackNotifier.notify({
             buffetAlias: this.alias,
-            body: menuText,
+            body: menuText.trim() || UNKNOWN_MENU_TEXT,
             imageUrls,
         });
     }

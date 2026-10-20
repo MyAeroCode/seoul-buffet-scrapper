@@ -6,9 +6,11 @@ export class GeminiAnalyzer {
     static async analyze(imageUrls: string[]): Promise<string> {
         try {
             const result = await generateText({
-                model: google('gemini-2.5-pro'),
+                model: google('gemini-3.8-flash'),
                 messages: generateTodayPrompt(imageUrls),
             });
+
+            console.log(`[gemini] finishReason=${result.finishReason}\n${result.text}`);
 
             return result.text;
         } catch (error) {

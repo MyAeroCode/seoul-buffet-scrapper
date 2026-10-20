@@ -2,6 +2,8 @@ import dayjs from 'dayjs';
 
 import { CoreMessage } from 'ai';
 
+export const UNKNOWN_MENU_TEXT = '메뉴를 알 수 없어요.';
+
 export function generateTodayPrompt(imageUrls: string[]): CoreMessage[] {
     const today: string = dayjs().format('YYYY-MM-DD (ddd)');
 
@@ -20,6 +22,10 @@ export function generateTodayPrompt(imageUrls: string[]): CoreMessage[] {
                 {
                     type: 'text',
                     text: `${today} 일자 이외의 메뉴가 포함되어 있을 수 있습니다. 이러한 메뉴는 무시합니다.`,
+                },
+                {
+                    type: 'text',
+                    text: `이미지에 ${today} 일자의 메뉴가 없으면 "${UNKNOWN_MENU_TEXT}" 라고만 대답해주세요.`,
                 },
                 {
                     type: 'text',
